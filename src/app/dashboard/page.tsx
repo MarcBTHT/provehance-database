@@ -26,6 +26,7 @@ interface CompanyDataProofs {
 export default function Dashboard() {
     const [selectedCompany_FidelityProof, setSelectedCompany_FidelityProof] = useState<CompanyDataProofs | null>(null);
     const [successPercentage, setSuccessPercentage] = useState(0);
+    const [validTransactions, setValidTransactions] = useState<Transaction[]>([]);
 
     // CALL POWENS FOR KEY ECHANGES
     const searchParams = useSearchParams()
@@ -103,21 +104,19 @@ export default function Dashboard() {
                     const validTransactions = data.transactions.filter((transaction: Transaction) =>
                         transaction.wording === selectedCompany_FidelityProof?.label
                     );
+                    setValidTransactions(validTransactions); //To display the transactions in the card
 
                     console.log('Valid transactions:', validTransactions);
                     // Get the length/count of valid transactions
                     const numberOfValidTransactions = validTransactions.length;
                     console.log('Number of valid transactions:', numberOfValidTransactions);
 
-                    // Assuming selectedCompany_FidelityProof?.value is a string that represents the target number of transactions
                     const targetObjective = parseInt(selectedCompany_FidelityProof?.value || '0', 10);
 
                     // Ensure the target objective is greater than 0 to avoid division by zero
                     if (targetObjective > 0) {
                         // Calculate the success percentage
                         let successPercent = (numberOfValidTransactions / targetObjective) * 100;
-                        // Optional: Round the success percentage to two decimal places
-                        //successPercent = Math.round(successPercent * 100) / 100;
                         successPercent = Math.min(Math.max(successPercent, 0), 100);
 
                         // Log the success percentage
@@ -132,7 +131,6 @@ export default function Dashboard() {
             console.log("Impossible to call Transaction function: access token is undefined.")
         }
     }
-
 
     useEffect(() => {
         if (accessToken) {
@@ -179,7 +177,7 @@ export default function Dashboard() {
                                 {selectedCompany_FidelityProof && (
                                     <section className="flex items-center justify-center my-6">
                                         <div className="flex flex-col gap-4 w-1/2">
-                                            <Card className="w-full p-3 flex-col">
+                                            <Card className="w-full p-3 flex-col  bg-opacity-90 bg-slate-200">
                                                 <CardHeader className="flex flex-col items-center gap-3">
                                                     <div className="flex flex-row mt-2">
                                                         <p className="mx-auto text-3xl font-bold pr-2">{successPercentage.toFixed(2)}%</p>
@@ -204,14 +202,12 @@ export default function Dashboard() {
                                                                         <TableColumn>AMOUNT</TableColumn>
                                                                     </TableHeader>
                                                                     <TableBody>
-                                                                        <TableRow key="1">
-                                                                            <TableCell>Lacoste</TableCell>
-                                                                            <TableCell>$100</TableCell>
-                                                                        </TableRow>
-                                                                        <TableRow key="2">
-                                                                            <TableCell>Lacoste</TableCell>
-                                                                            <TableCell>$50</TableCell>
-                                                                        </TableRow>
+                                                                        {validTransactions.map((transaction, index) => (
+                                                                            <TableRow key={index}>
+                                                                                <TableCell>{transaction.wording}</TableCell>
+                                                                                <TableCell>{Math.abs(transaction.value)}</TableCell>
+                                                                            </TableRow>
+                                                                        ))}
                                                                     </TableBody>
                                                                 </Table>
                                                             </AccordionItem>
@@ -219,7 +215,7 @@ export default function Dashboard() {
                                                     </div>
                                                 </CardBody>
                                                 <CardFooter className="mb-2">
-                                                    <Button className="mx-auto" disabled size='lg'>Generate a proof</Button>
+                                                    <Button className="mx-auto bg-tiffany_blue" isDisabled={successPercentage < 100} size='lg'>Generate a proof</Button>
                                                 </CardFooter>
                                             </Card>
                                         </div>

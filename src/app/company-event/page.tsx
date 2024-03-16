@@ -88,7 +88,7 @@ export default function CompanyEvent() {
                                         onChange={(e) => setTransactionName(e.target.value)} />
 
                                     {/* Choose anteriority */}
-                                    <Input type="date" variant="bordered" label="Anterority" className="my-3" defaultValue="2024-03-02"
+                                    <Input type="date" variant="bordered" label="Anterority" className="my-3" defaultValue="2024-01-01"
                                         onChange={(e) => setAnterorityDate(e.target.value)} />
 
                                     {/* Choose a data type */}
