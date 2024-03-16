@@ -6,7 +6,7 @@ import { Card, CardHeader, CardBody, CardFooter, Input, Button, Autocomplete, Au
 import { CompanyTypeChoice } from "../constants/companyTypeChoice";
 import Link from 'next/link';
 
-export default function ProofOfTransaction() {
+export default function CompanyEvent() {
     const [transactionName, setTransactionName] = useState('');
     const [anterorityDate, setAnterorityDate] = useState('2024-01-01');
     const [dataType, setDataType] = useState('');

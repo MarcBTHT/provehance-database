@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { Card, CardHeader, CardBody, CardFooter, Button } from "@nextui-org/react";
-import { Switch, Input, Select, SelectItem, Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Switch, Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import Image from 'next/image';
 
 interface CachedProof {
@@ -22,7 +22,7 @@ interface CompanyDataProofs {
     dataType: string;
 }
 
-export default function AllProofs() {
+export default function ProofOfFidelity() {
     const [selectedValuesWeb2orWeb3, setSelectedValuesWeb2orWeb3] = useState<string[]>([]);
     const [companySelected, setCompanySelected] = useState<CachedProof | null>(null);
     const [cachedProofs, setCachedProofs] = useState<CachedProof[]>([]); // State to store cached data
@@ -72,10 +72,10 @@ export default function AllProofs() {
             console.log('companySelected', companySelected);
 
             console.log('Redirecting to auth URL for web2...');
-            // Call API for web2
-           
+            window.location.href = '/dashboard';
+
         } else if (selectedValues.includes('web3')) {
-            // Need to call etherscan API
+            // Need to call indexer
         }
     };
 
