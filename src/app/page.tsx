@@ -1,10 +1,12 @@
 import Link from 'next/link';
+import Header from '../components/header'
 import Footer from '../components/footer'
 
 export default function Home() {
   return (
     <div className='bg-light_blue'>
       <div className='backdrop-blur-3xl flex flex-col min-h-screen mx-auto' style={{ maxWidth: '1500px' }}>
+        <Header />
         <main className="flex-grow">
           <section className='text-center min-h-screen flex flex-col justify-center relative'>
             <div
