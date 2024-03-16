@@ -9,16 +9,23 @@ import { useSearchParams } from 'next/navigation';
 interface Transaction {
     id: number;
     wording: string;
-    date: string; 
-    rdate: string; 
-    value: number; 
+    date: string;
+    rdate: string;
+    value: number;
     type: string;
     // Additional properties can be added here as needed
-  }
+}
+interface CompanyDataProofs {
+    label: string;
+    value: string;
+    date: string;
+    conditionType: string;
+    dataType: string;
+}
 
 export default function Dashboard() {
-    const [selectedCompany_FidelityProof, setSelectedCompany_FidelityProof] = useState(null);
-    const [validTransactions, setValidTransactions] = useState<Transaction[]>([]);
+    const [selectedCompany_FidelityProof, setSelectedCompany_FidelityProof] = useState<CompanyDataProofs| null>(null);
+    const [successPercentage, setSuccessPercentage] = useState(0);
 
     // CALL POWENS FOR KEY ECHANGES
     const searchParams = useSearchParams()
@@ -28,7 +35,7 @@ export default function Dashboard() {
         // Check if an access token is already stored in local storage
         const storedToken = localStorage.getItem('accessToken');
         const json = localStorage.getItem('result');
-        if (storedToken) { 
+        if (storedToken) {
             setAccessToken(storedToken);
             console.log(json);
         } else {
@@ -81,11 +88,24 @@ export default function Dashboard() {
             })
                 .then((response) => response.json())
                 .then(data => {
-                    data.transactions.map((transaction: any) => {
-                        if (transaction.wording == name) { // date to be added (transaction.date >= date)
-                            validTransactions.push(transaction);
-                        }
-                    })
+                    // Filter transactions based on the criteria
+                    const validTransactions = data.transactions.filter((transaction: Transaction) =>
+                        transaction.wording === selectedCompany_FidelityProof?.label
+                    );
+
+                    // Calculate the sum of values of valid transactions
+                    const finalBalance = validTransactions.reduce((acc: number, curr: Transaction) => acc + curr.value, 0);
+
+                    // Calculate success percentage
+                    const currentAmount = parseFloat(localStorage.getItem('amount') || '0');
+                    let successPercent = (finalBalance / currentAmount) * 100;
+
+                    // Ensure successPercent is within 0 to 100
+                    successPercent = Math.min(Math.max(successPercent, 0), 100);
+
+                    // Log the success percentage
+                    console.log("Success percentage is: " + successPercent);
+                    setSuccessPercentage(isNaN(successPercent) ? 0 : successPercent);
                 })
                 .catch(error => {
                     console.error('Error:', error);
