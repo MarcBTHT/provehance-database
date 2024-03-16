@@ -72,8 +72,7 @@ export default function ProofOfFidelity() {
             console.log('companySelected', companySelected);
 
             console.log('Redirecting to auth URL for web2...');
-            window.location.href = '/dashboard';
-
+            window.location.href = `https://${process.env.NEXT_PUBLIC_DOMAINE}-sandbox.biapi.pro/2.0/auth/webview/connect?client_id=${process.env.NEXT_PUBLIC_CLIENT_ID}&redirect_uri=http://localhost:3000/dashboard`;
         } else if (selectedValues.includes('web3')) {
             // Need to call indexer
         }

@@ -35,6 +35,15 @@ export default function Dashboard() {
         // Check if an access token is already stored in local storage
         const storedToken = localStorage.getItem('accessToken');
         const json = localStorage.getItem('result');
+
+        // Get The selected data selected by the user from the previous page (proof-of-fidelity)
+        const cachedData = localStorage.getItem('selectedCompany_FidelityProof');
+        console.log('selectedCompany_FidelityProof', cachedData)
+        if (cachedData) {
+            const data = JSON.parse(cachedData);
+            console.log('Données de l\'entreprise récupérées :', data);
+            setSelectedCompany_FidelityProof(data);
+        }
         if (storedToken) {
             setAccessToken(storedToken);
             console.log(json);
@@ -84,28 +93,37 @@ export default function Dashboard() {
                     'Authorization': 'Bearer ' + accessToken,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ accessToken }),
             })
                 .then((response) => response.json())
                 .then(data => {
+                    console.log('data from get Transaction:', data);
+                    console.log('selectedCompany_FidelityProof?.label', selectedCompany_FidelityProof?.label);
+
                     // Filter transactions based on the criteria
                     const validTransactions = data.transactions.filter((transaction: Transaction) =>
                         transaction.wording === selectedCompany_FidelityProof?.label
                     );
 
-                    // Calculate the sum of values of valid transactions
-                    const finalBalance = validTransactions.reduce((acc: number, curr: Transaction) => acc + curr.value, 0);
+                    console.log('Valid transactions:', validTransactions);
+                    // Get the length/count of valid transactions
+                    const numberOfValidTransactions = validTransactions.length;
+                    console.log('Number of valid transactions:', numberOfValidTransactions);
 
-                    // Calculate success percentage
-                    const currentAmount = parseFloat(localStorage.getItem('amount') || '0');
-                    let successPercent = (finalBalance / currentAmount) * 100;
+                    // Assuming selectedCompany_FidelityProof?.value is a string that represents the target number of transactions
+                    const targetObjective = parseInt(selectedCompany_FidelityProof?.value || '0', 10);
 
-                    // Ensure successPercent is within 0 to 100
-                    successPercent = Math.min(Math.max(successPercent, 0), 100);
+                    // Ensure the target objective is greater than 0 to avoid division by zero
+                    if (targetObjective > 0) {
+                        // Calculate the success percentage
+                        let successPercent = (numberOfValidTransactions / targetObjective) * 100;
+                        // Optional: Round the success percentage to two decimal places
+                        //successPercent = Math.round(successPercent * 100) / 100;
+                        successPercent = Math.min(Math.max(successPercent, 0), 100);
 
-                    // Log the success percentage
-                    console.log("Success percentage is: " + successPercent);
-                    setSuccessPercentage(isNaN(successPercent) ? 0 : successPercent);
+                        // Log the success percentage
+                        console.log("Success percentage is: " + successPercent);
+                        setSuccessPercentage(isNaN(successPercent) ? 0 : successPercent);
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -115,14 +133,6 @@ export default function Dashboard() {
         }
     }
 
-    useEffect(() => { // Get the company data selected by the user
-        const cachedData = localStorage.getItem('selectedCompany_ProofTransactions');
-        if (cachedData) {
-            const data = JSON.parse(cachedData);
-            console.log('Données de l\'entreprise récupérées :', data);
-            setSelectedCompany_FidelityProof(data);
-        }
-    }, []);
 
     useEffect(() => {
         if (accessToken) {
