@@ -49,7 +49,7 @@ const Header = () => {
                                     </button>
                                 </DropdownTrigger>
                                 <DropdownMenu aria-label="product menu" disabledKeys={["swap"]}>
-                                    <DropdownItem key="proof" href="/" className='text-white'>Proof of Fidelity</DropdownItem>
+                                    <DropdownItem key="proof" href="/proof-of-fidelity" className='text-white'>Proof of Fidelity</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </div>

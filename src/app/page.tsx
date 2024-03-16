@@ -47,7 +47,7 @@ export default function Home() {
                 Earn exclusive rewards and tokens for your purchases, backed by the security and privacy of zero-knowledge proofs. Experience the future of loyalty programs with FideRewards.
               </p>
               <nav className="flex justify-center mt-20 p-8">
-                <Link href="/" className="text-2xl text-black mr-16 bg-white hover:bg-lavender font-bold font-sans py-4 px-14 rounded-lg transition duration-300">
+                <Link href="/proof-of-fidelity" className="text-2xl text-black mr-16 bg-white hover:bg-lavender font-bold font-sans py-4 px-14 rounded-lg transition duration-300">
                   Launch
                 </Link>
                 <Link href="/verifier" className="text-xl text-white font-bold py-4 px-4">
