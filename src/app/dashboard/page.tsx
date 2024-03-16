@@ -24,7 +24,7 @@ interface CompanyDataProofs {
 }
 
 export default function Dashboard() {
-    const [selectedCompany_FidelityProof, setSelectedCompany_FidelityProof] = useState<CompanyDataProofs| null>(null);
+    const [selectedCompany_FidelityProof, setSelectedCompany_FidelityProof] = useState<CompanyDataProofs | null>(null);
     const [successPercentage, setSuccessPercentage] = useState(0);
 
     // CALL POWENS FOR KEY ECHANGES
@@ -124,6 +124,12 @@ export default function Dashboard() {
         }
     }, []);
 
+    useEffect(() => {
+        if (accessToken) {
+            getTransaction();
+        }
+    }, [accessToken]);
+
     return (
         <main className='bg-light_blue'>
             <div className='backdrop-blur-3xl flex flex-col min-h-screen mx-auto' style={{ maxWidth: '1500px' }}>
@@ -165,36 +171,42 @@ export default function Dashboard() {
                                         <div className="flex flex-col gap-4 w-1/2">
                                             <Card className="w-full p-3 flex-col">
                                                 <CardHeader className="flex flex-col items-center gap-3">
-                                                    <div className="flex flex-col mx-auto mt-2">
-                                                        <p className="mx-auto text-3xl font-bold">83%</p>
+                                                    <div className="flex flex-row mt-2">
+                                                        <p className="mx-auto text-3xl font-bold pr-2">{successPercentage.toFixed(2)}%</p>
+                                                        <p className="text-3xl font-bold">Filled</p>
                                                     </div>
                                                     <div className="w-full">
-                                                        <Progress color="danger" aria-label="Loading..." value={70} />
+                                                        <Progress color={successPercentage === 100 ? "success" : "warning"} aria-label="Loading..." value={successPercentage} />
                                                     </div>
                                                 </CardHeader>
                                                 <CardBody>
-                                                    <p className="mx-auto">You don&apos;t fit the requirement.</p>
-                                                    <p className="text-xl font-semibold mb-4">Details:</p>
-                                                    <Accordion selectionMode="multiple">
-                                                        <AccordionItem key="1" aria-label="Transactions" title="Transactions">
-                                                            <Table aria-label="Example static collection table" className="m-2 w-9/10">
-                                                                <TableHeader>
-                                                                    <TableColumn>NAME</TableColumn>
-                                                                    <TableColumn>AMOUNT</TableColumn>
-                                                                </TableHeader>
-                                                                <TableBody>
-                                                                    <TableRow key="1">
-                                                                        <TableCell>Lacoste</TableCell>
-                                                                        <TableCell>$100</TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow key="2">
-                                                                        <TableCell>Lacoste</TableCell>
-                                                                        <TableCell>$50</TableCell>
-                                                                    </TableRow>
-                                                                </TableBody>
-                                                            </Table>
-                                                        </AccordionItem>
-                                                    </Accordion>
+                                                    {/* Display message based on the success percentage */}
+                                                    <p className="mx-auto text-xl mb-4">
+                                                        {successPercentage === 100 ? "You fit the requirement!" : "You don't fit the requirement."}
+                                                    </p>
+                                                    <div>
+                                                        <p className="text-xl font-semibold mb-4">Details:</p>
+                                                        <Accordion selectionMode="multiple">
+                                                            <AccordionItem key="1" aria-label="Transactions" title="Transactions">
+                                                                <Table aria-label="Example static collection table" className="m-2 w-9/10">
+                                                                    <TableHeader>
+                                                                        <TableColumn>NAME</TableColumn>
+                                                                        <TableColumn>AMOUNT</TableColumn>
+                                                                    </TableHeader>
+                                                                    <TableBody>
+                                                                        <TableRow key="1">
+                                                                            <TableCell>Lacoste</TableCell>
+                                                                            <TableCell>$100</TableCell>
+                                                                        </TableRow>
+                                                                        <TableRow key="2">
+                                                                            <TableCell>Lacoste</TableCell>
+                                                                            <TableCell>$50</TableCell>
+                                                                        </TableRow>
+                                                                    </TableBody>
+                                                                </Table>
+                                                            </AccordionItem>
+                                                        </Accordion>
+                                                    </div>
                                                 </CardBody>
                                                 <CardFooter className="mb-2">
                                                     <Button className="mx-auto" disabled size='lg'>Generate a proof</Button>
