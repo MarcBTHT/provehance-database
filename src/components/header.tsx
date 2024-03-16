@@ -53,7 +53,7 @@ const Header = () => {
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
-                        <Link href="/" className="text-white hover:text-lavender ml-4 px-6 py-2 text-xl transition duration-300">
+                        <Link href="/company-event" className="text-white hover:text-lavender ml-4 px-6 py-2 text-xl transition duration-300">
                             Company
                         </Link>
                         <Link href="/#contact" className="text-white hover:text-lavender ml-4 px-6 py-2 text-xl transition duration-300">
