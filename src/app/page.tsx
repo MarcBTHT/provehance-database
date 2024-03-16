@@ -3,7 +3,7 @@ import Footer from '../components/footer'
 
 export default function Home() {
   return (
-    <div className=''>
+    <div className='bg-light_blue'>
       <div className='backdrop-blur-3xl flex flex-col min-h-screen mx-auto' style={{ maxWidth: '1500px' }}>
         <main className="flex-grow">
           <section className='text-center min-h-screen flex flex-col justify-center relative'>
@@ -41,7 +41,7 @@ export default function Home() {
               <h1 className="text-8xl text-white font-sans font-bold leading-tight text-center responsive-heading">
                 With Privacy.
               </h1>
-              <p className="text-2xl mt-20 text-gray-300 mt-16 text-center">
+              <p className="text-2xl mt-20 text-gray-200 mt-16 text-center">
                 Earn exclusive rewards and tokens for your purchases, backed by the security and privacy of zero-knowledge proofs. Experience the future of loyalty programs with FideRewards.
               </p>
               <nav className="flex justify-center mt-20 p-8">
