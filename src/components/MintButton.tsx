@@ -108,19 +108,19 @@ const MintButton: React.FC<MintButtonProps> = ({ company_name, user_name, fideli
                             <p className="text-xl font-bold break-words">Well Done!</p>
                         </ModalHeader>
                         <ModalBody>
-                            <Image
-                                src={`https://api.cloudnouns.com/v1/pfp?text=MONOPRIX-DupontJean&size=50`}
+                            <img
+                                src={`https://api.cloudnouns.com/v1/pfp?text=${company_name}-${user_name}&size=50`}
                                 alt="Logo"
-                                width={36}
-                                height={36}
-                                className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0 mr-2"
+                                width={100}
+                                height={100}
+                                className="items-center text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0 mr-2"
                             />
-                            <div className="p-5">
+                            <div className="">
                                 <p className="font-semibold" >SBT hash:</p>
                                 <p>{modalContentSBT}</p>
                                 <p className="font-semibold" >Fan Token hash:</p>
                                 <p>{modalContentFan}</p>
-                                <p className="break-words font-semibold">This hash is your unique proof. Please keep it safe as it represents your ability to prove your actions.</p>
+                                <p className="pt-3 break-words font-semibold">The SBT hash is your unique proof. Please keep it safe as it represents your ability to prove your actions.</p>
                             </div>
                         </ModalBody>
                         <ModalFooter className="flex justify-between items-center p-5 border-t">
