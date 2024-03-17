@@ -27,8 +27,9 @@ const MintButton: React.FC<MintButtonProps> = ({ company_name, user_name, fideli
         //   })
         //   console.log('network', network)
         console.log('BONJOUR')
+        console.log('walletConnect', walletConnector)
         if (walletConnector?.supportsNetworkSwitching()) {
-            await walletConnector.switchNetwork({ networkChainId: 137 });
+            await walletConnector.switchNetwork({ networkChainId: 88888 });
             console.log("Success! Network switched");
         }
         //await mintSBT(fidelityLevel, user_name, company_name)
