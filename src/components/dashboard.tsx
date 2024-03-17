@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Header from './header';
 import Footer from './footer';
-import { Card, CardHeader, CardBody, CardFooter, Button, Progress, Accordion, AccordionItem, Table, TableColumn, TableHeader, TableRow, TableBody, TableCell } from "@nextui-org/react";
+import { useDisclosure, Card, CardHeader, CardBody, CardFooter, Button, Progress, Accordion, AccordionItem, Table, TableColumn, TableHeader, TableRow, TableBody, TableCell, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
 import { useSearchParams } from 'next/navigation';
 import { DynamicWidget } from "../lib/dynamic";
+import MintButton from './MintButton';
 
 interface Transaction {
     id: number;
@@ -28,6 +29,11 @@ export default function Dashboard() {
     const [selectedCompany_FidelityProof, setSelectedCompany_FidelityProof] = useState<CompanyDataProofs | null>(null);
     const [successPercentage, setSuccessPercentage] = useState(0);
     const [validTransactions, setValidTransactions] = useState<Transaction[]>([]);
+
+    const { isOpen, onOpen, onClose } = useDisclosure(); // To open the generate proof popup
+    const handleOpen = () => {
+        onOpen();
+    }
 
     // CALL POWENS FOR KEY ECHANGES
     const searchParams = useSearchParams()
@@ -219,7 +225,25 @@ export default function Dashboard() {
                                                     </div>
                                                 </CardBody>
                                                 <CardFooter className="mb-2">
-                                                    <Button aria-label="Generate proof" className="mx-auto bg-tiffany_blue" isDisabled={successPercentage < 100} size='lg'>Generate a proof</Button>
+                                                    <Button aria-label="Generate proof" onPress={() => handleOpen()} className="mx-auto bg-tiffany_blue" isDisabled={successPercentage < 100} size='lg'>Generate a proof</Button>
+                                                    <Modal
+                                                        size="md"
+                                                        isOpen={isOpen}
+                                                        onClose={onClose}
+                                                    >
+                                                        <ModalContent>
+                                                            {(onClose) => (
+                                                                <>
+                                                                    <ModalHeader className="flex flex-col gap-1">Choose a network</ModalHeader>
+                                                                    <ModalBody className='flex flex-col items-center justify-center w-full'>
+                                                                        <MintButton company_name={selectedCompany_FidelityProof.label} user_name={"DupontJean"} fidelityLevel={2} /> {/* Put the number of transaction and in mintButton determine fidilityLevel */}
+                                                                    </ModalBody>
+                                                                    <ModalFooter>
+                                                                    </ModalFooter>
+                                                                </>
+                                                            )}
+                                                        </ModalContent>
+                                                    </Modal>
                                                 </CardFooter>
                                             </Card>
                                         </div>

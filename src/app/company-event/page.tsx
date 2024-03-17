@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Header from '../../components/header';
 import { Card, CardHeader, CardBody, CardFooter, Input, Button, Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import { CompanyTypeChoice } from "../constants/companyTypeChoice";
+import { CompanyTypeChoice } from "../../constants/companyTypeChoice";
 import Link from 'next/link';
 
 export default function CompanyEvent() {
