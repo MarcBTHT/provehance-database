@@ -5,6 +5,7 @@ import Header from './header';
 import Footer from './footer';
 import { Card, CardHeader, CardBody, CardFooter, Button, Progress, Accordion, AccordionItem, Table, TableColumn, TableHeader, TableRow, TableBody, TableCell } from "@nextui-org/react";
 import { useSearchParams } from 'next/navigation';
+import { DynamicWidget } from "../lib/dynamic";
 
 interface Transaction {
     id: number;
@@ -174,6 +175,9 @@ export default function Dashboard() {
                         <>
                             {/*Proof of Fidelity*/}
                             <div>
+                                <div className="z-10 w-full items-center justify-center font-mono text-sm lg:flex">
+                                    <DynamicWidget />
+                                </div>
                                 {selectedCompany_FidelityProof && (
                                     <section className="flex items-center justify-center my-6">
                                         <div className="flex flex-col gap-4 w-1/2">
