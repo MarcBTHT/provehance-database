@@ -1,4 +1,4 @@
-export const addressSBT = "0xcd8497C7ca801163E866B6c81416D45c522BAe17";
+export const addressSBT = "0xbC9C56D210C1922AC88c173382453b9CA8fc34B0";
 export const abiSBT = [
     {
       "inputs": [],

@@ -1,11 +1,12 @@
 import { useState, useRef } from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Avatar } from "@nextui-org/react";
 import { abiSBT, addressSBT } from '../constants/abiSBT';
+import { abiFanToken, addressFanToken } from '../constants/abiFanToken';
 import Image from 'next/image';
-import { spicy } from 'wagmi/chains';
 import { prepareWriteContract, writeContract } from '@wagmi/core'
-import { switchNetwork } from '@wagmi/core'
+import { getAccount } from '@wagmi/core'
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { parseUnits  } from 'viem'
 
 interface MintButtonProps {
     company_name: string;
@@ -15,24 +16,32 @@ interface MintButtonProps {
 
 const MintButton: React.FC<MintButtonProps> = ({ company_name, user_name, fidelityLevel }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState('');
+    const [modalContentSBT, setModalContentSBT] = useState('');
+    const [modalContentFan, setModalContentFan] = useState('');
+
+    const [accountAddress, setAccountAddress] = useState<`0x${string}`>('0x0');
 
     const closeModal = () => setIsModalOpen(false);
+
     const { walletConnector } = useDynamicContext();
 
-
-    async function handleMintSBT() { // To mintSBT
-        // const network = await switchNetwork({
-        //     chainId: 1,
-        //   })
-        //   console.log('network', network)
-        console.log('BONJOUR')
+    async function handleMintSBTandFan() { // To mintSBT and mintFanToken
         console.log('walletConnect', walletConnector)
         if (walletConnector?.supportsNetworkSwitching()) {
             await walletConnector.switchNetwork({ networkChainId: 88888 });
             console.log("Success! Network switched");
         }
-        //await mintSBT(fidelityLevel, user_name, company_name)
+        const account = getAccount();
+        if (account && account.address) {
+            // Only set the account address if it's defined
+            setAccountAddress(account.address);
+            console.log('address', account);
+            await mintSBT(fidelityLevel, user_name, company_name);
+            let amountInWei = parseUnits('100', 18);
+            await mintFanToken(account.address, amountInWei);
+        } else {
+            console.error("Account or account address is undefined.");
+        }
     }
 
     async function mintSBT(fidelityLevel: number, name: string, company: string) {
@@ -45,18 +54,33 @@ const MintButton: React.FC<MintButtonProps> = ({ company_name, user_name, fideli
             })
             console.log('config', config);
             const { hash } = await writeContract(config)
-            console.log('hash', hash);
-            setModalContent(hash);
+            console.log('hash SBT', hash);
+            setModalContentSBT(hash);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    async function mintFanToken(to: `0x${string}`, amount: BigInt) {
+        try {
+            const config = await prepareWriteContract({
+                address: addressFanToken,
+                abi: abiFanToken,
+                functionName: 'mint',
+                args: [to, amount],
+            })
+            const { hash } = await writeContract(config)
+            console.log('hash Fan', hash);
+            setModalContentFan(hash);
             setIsModalOpen(true);
 
         } catch (error) {
             console.error(error);
         }
     }
-    // erc20 : function mint(address to, uint256 amount)
     return (
         <div>
-            <Button color="default" variant="bordered" onClick={() => handleMintSBT()} size="lg" className="flex items-left justify-between p-4">
+            <Button color="default" variant="bordered" onClick={() => handleMintSBTandFan()} size="lg" className="flex items-left justify-between p-4">
                 <div className="flex items-center">
                     <Image
                         src="/images/chiliz-logo.png"

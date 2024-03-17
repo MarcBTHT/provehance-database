@@ -1,4 +1,4 @@
-export const addressFanToken = "0x96e61Cc86d091226fF32857d0C105Cd5c9F1F8F7";
+export const addressFanToken = "0xFC22080934ddEF4114B70329378B6B506D01fFA2";
 export const abiFanToken = [
     {
       "inputs": [
