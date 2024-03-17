@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Avatar } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Avatar, user } from "@nextui-org/react";
 import { abiSBT, addressSBT } from '../constants/abiSBT';
 import { abiFanToken, addressFanToken } from '../constants/abiFanToken';
 import Image from 'next/image';
 import { prepareWriteContract, writeContract } from '@wagmi/core'
 import { getAccount } from '@wagmi/core'
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
-import { parseUnits  } from 'viem'
+import { parseUnits } from 'viem'
 
 interface MintButtonProps {
     company_name: string;
@@ -56,7 +56,6 @@ const MintButton: React.FC<MintButtonProps> = ({ company_name, user_name, fideli
             const { hash } = await writeContract(config)
             console.log('hash SBT', hash);
             setModalContentSBT(hash);
-
         } catch (error) {
             console.error(error);
         }
@@ -73,7 +72,6 @@ const MintButton: React.FC<MintButtonProps> = ({ company_name, user_name, fideli
             console.log('hash Fan', hash);
             setModalContentFan(hash);
             setIsModalOpen(true);
-
         } catch (error) {
             console.error(error);
         }
@@ -95,6 +93,45 @@ const MintButton: React.FC<MintButtonProps> = ({ company_name, user_name, fideli
                     </div>
                 </div>
             </Button>
+
+            {isModalOpen && (
+                <Modal backdrop={'blur'} isOpen={isModalOpen} onClose={closeModal} className="overflow-auto max-w-4xl w-full mx-auto">
+                    <ModalContent className="bg-white shadow-lg rounded-lg overflow-hidden">
+                        <ModalHeader className="flex justify-start items-center p-5 border-b">
+                            <Image
+                                src="/images/icon/success.svg"
+                                alt="Logo"
+                                width={36}
+                                height={36}
+                                className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0 mr-2"
+                            />
+                            <p className="text-xl font-bold break-words">Well Done!</p>
+                        </ModalHeader>
+                        <ModalBody>
+                            <Image
+                                src={`https://api.cloudnouns.com/v1/pfp?text=MONOPRIX-DupontJean&size=50`}
+                                alt="Logo"
+                                width={36}
+                                height={36}
+                                className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0 mr-2"
+                            />
+                            <div className="p-5">
+                                <p className="font-semibold" >SBT hash:</p>
+                                <p>{modalContentSBT}</p>
+                                <p className="font-semibold" >Fan Token hash:</p>
+                                <p>{modalContentFan}</p>
+                                <p className="break-words font-semibold">This hash is your unique proof. Please keep it safe as it represents your ability to prove your actions.</p>
+                            </div>
+                        </ModalBody>
+                        <ModalFooter className="flex justify-between items-center p-5 border-t">
+                            <Button color="danger" variant="light" onPress={closeModal}>
+                                Close
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
+            )
+            }
         </div >
     );
 };
