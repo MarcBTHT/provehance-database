@@ -7,6 +7,7 @@ import { useDisclosure, Card, CardHeader, CardBody, CardFooter, Button, Progress
 import { useSearchParams } from 'next/navigation';
 import { DynamicWidget } from "../lib/dynamic";
 import MintButton from './MintButton';
+import AztecButton from './Aztec';
 
 interface Transaction {
     id: number;
@@ -234,8 +235,9 @@ export default function Dashboard() {
                                                         <ModalContent>
                                                             {(onClose) => (
                                                                 <>
-                                                                    <ModalHeader className="flex flex-col gap-1">Choose a network</ModalHeader>
+                                                                    <ModalHeader className="flex flex-col gap-1">Create your Proof</ModalHeader>
                                                                     <ModalBody className='flex flex-col items-center justify-center w-full'>
+                                                                        <AztecButton condition_value={parseInt(selectedCompany_FidelityProof.value, 10)} numbers_of_transaction={validTransactions.length}/>
                                                                         <MintButton company_name={selectedCompany_FidelityProof.label} user_name={"DupontJean"} fidelityLevel={2} /> {/* Put the number of transaction and in mintButton determine fidilityLevel */}
                                                                     </ModalBody>
                                                                     <ModalFooter>

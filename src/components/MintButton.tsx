@@ -89,7 +89,7 @@ const MintButton: React.FC<MintButtonProps> = ({ company_name, user_name, fideli
                     />
                     <div className="ml-3">
                         <h2 className="mb-1">Chiliz Network</h2>
-                        <p className="text-sm">Super powerful</p>
+                        <p className="text-sm">Mint your rewards</p>
                     </div>
                 </div>
             </Button>
