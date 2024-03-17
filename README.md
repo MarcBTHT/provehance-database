@@ -40,6 +40,18 @@ This solution stands as a technological advance, ensuring that users can transpa
 
 ## Features ✨
 
+FideRewards uses an Open Banking API to reach clients bank accounts, enabling users to prove their financial loyalty to organizations through zero-knowledge proofs. Users consent to securely link their bank data, and then a zero-knowledge proof system (Aztec) will compute from the bank data the degree of loyalty of the clients, and will generate a ZK proof. After that, a Soulbound Token (SBT) and Fan Tokens will be generated as immutable evidence of their fidelity. This system ensures privacy and security, allowing users to showcase their loyalty and receive rewards without exposing sensitive financial details.
+
+### Core Technologies:
+
+- **Dynamic**: We used Dynamic to allow everyone to use our app, which means also on-boarding clients not familiar with Web3 - essential in our project as many of the use-cases are also for Web2 users. We configured the Dynamic wallet to match with our preferences. People can connect themselves on our app with their email, their wallet or with github. In our video, we connect to the metamask wallet on our beautiful User Interface. Dynamic is perfectly integrated with the front-end, thanks to its easy configuration and integration.
+
+- **Chiliz Chain**: We use Chiliz Chain to deploy and mint ERC20 Fan Tokens, which represent the company's tokens, as well as SBTs, which represent the user's loyalty status. Fan Tokens are exactly what we needed, as we wanted a token for loyal customers to use or sell as a reward as part of a loyalty program. In more detail, the ERC20 Fan Token is first created by the company, then minted each time a customer proves their loyalty. The customer can then either sell the tokens or use them to buy something from the company. The company then burns the tokens. The SBT is also minted each time a customer proves their loyalty. The SBT will bear the customer's degree of loyalty - for example, silver, gold or platinum.
+
+- **Nouns DAO**: We integrated the versatile art and brand assets of Nouns to enrich the UX/UI of our platform by creating a Noun asset whose seed is linked to the user's first name/last name, as well as the name of the company to which the customer is loyal. Not only have we succeeded in making the SBT welcoming, innovative and user-centric by adding the personalized Noun asset, but we've also made the Noun asset essential to our solution. Indeed, the Noun asset can be seen as a visual hash of the SBT, due to its constancy linked to the user name and company name as asset generators, making the SBT even more unique and linked to the company AND the user.
+
+- **Aztec Protocol**: The Noir application of the Aztec protocol is at the heart of our project, since it is this application that generates our users' ZK loyalty credentials. In more detail, our application uses a Noir program coupled with an interface for users to easily generate and verify their ZK proof of loyalty. The ZK proof must then be linked to the SBT, so that anyone who sees the user's SBT can check on our website that the proof is valid, without knowing the customer's personal banking details.
+
 
 
 
