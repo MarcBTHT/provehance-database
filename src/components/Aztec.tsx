@@ -11,17 +11,34 @@ interface AztecButtonProps {
 }
 
 const AztecButton: React.FC<AztecButtonProps> = ({ condition_value, numbers_of_transaction }) => {
-    async function handleGenerateProof() { 
+    const [proof, setProof] = useState(""); // State to hold the proof
+
+    async function handleGenerateProof() {
         console.log('condition_value', condition_value)
         console.log('numbers_of_transaction', numbers_of_transaction)
         const backend = new BarretenbergBackend(noirjs_demo);
         const noir = new Noir(noirjs_demo, backend);
-       
+
         const input = { x: numbers_of_transaction, y: condition_value };
-        const proof = await noir.generateFinalProof(input);
-        console.log('result', proof.proof)
+        const proofResult = await noir.generateFinalProof(input);
+        console.log('result', proofResult.proof)
+        const proofBase64 = uint8ArrayToBase64(proofResult.proof);
+        setProof(proofBase64);
     }
-    
+    // Function to convert Uint8Array to Base64 string
+    function uint8ArrayToBase64(buffer: Uint8Array): string {
+        return btoa(String.fromCharCode.apply(null, Array.from(buffer)));
+    }
+
+    // Function to copy the proof to clipboard
+    const handleCopyProof = () => {
+        navigator.clipboard.writeText(proof).then(() => {
+            console.log('Proof copied to clipboard!');
+        }, (err) => {
+            console.error('Could not copy proof: ', err);
+        });
+    };
+
     return (
         <div>
             <Button color="default" variant="bordered" onClick={() => handleGenerateProof()} size="lg" className="flex items-left justify-between p-4">
@@ -31,6 +48,11 @@ const AztecButton: React.FC<AztecButtonProps> = ({ condition_value, numbers_of_t
                     </div>
                 </div>
             </Button>
+            {proof && (
+                <div className="mt-4 flex justify-center">
+                    <Button color='primary' onClick={handleCopyProof}>Copy Proof</Button>
+                </div>
+            )}
         </div >
     );
 };
