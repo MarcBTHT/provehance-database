@@ -20,7 +20,10 @@ const AztecButton: React.FC<AztecButtonProps> = ({ condition_value, numbers_of_t
     async function handleGenerateProof() {
         console.log('condition_value', condition_value)
         console.log('numbers_of_transaction', numbers_of_transaction)
+        
+        //@ts-ignore
         const backend = new BarretenbergBackend(noirjs_demo);
+        //@ts-ignore
         const noir = new Noir(noirjs_demo, backend);
 
         const input = { x: numbers_of_transaction, y: condition_value };

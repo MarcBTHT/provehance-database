@@ -9,6 +9,11 @@ import { BarretenbergBackend } from '@noir-lang/backend_barretenberg';
 import { Noir } from '@noir-lang/noir_js';
 import noirjs_demo from '../../../circuit/target/noirjs_demo.json';
 
+export type ProofData = {
+    publicInputs: Uint8Array[];
+    proof: Uint8Array;
+};
+
 export default function Verifier() {
     const [proofBase64, setProofBase64] = useState("");
     const [loading, setLoading] = useState(false);
@@ -21,11 +26,12 @@ export default function Verifier() {
         try {
             // Assuming proofBase64 is your Base64-encoded JSON string of ProofData
             //const proofData = decodeProofData(proofBase64);
-            
+            //@ts-ignore
             const backend = new BarretenbergBackend(noirjs_demo);
+            //@ts-ignore
             const noir = new Noir(noirjs_demo, backend);
             //const verification = await noir.verifyFinalProof(proofData);
-            console.log('Verification result:', verification);
+            //console.log('Verification result:', verification);
         } catch (error) {
             console.error('Error during proof verification:', error);
         } finally {
