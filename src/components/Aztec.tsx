@@ -9,6 +9,10 @@ interface AztecButtonProps {
     condition_value: number;
     numbers_of_transaction: number;
 }
+export type ProofData = {
+    publicInputs: Uint8Array[];
+    proof: Uint8Array;
+};
 
 const AztecButton: React.FC<AztecButtonProps> = ({ condition_value, numbers_of_transaction }) => {
     const [proof, setProof] = useState(""); // State to hold the proof
@@ -21,13 +25,30 @@ const AztecButton: React.FC<AztecButtonProps> = ({ condition_value, numbers_of_t
 
         const input = { x: numbers_of_transaction, y: condition_value };
         const proofResult = await noir.generateFinalProof(input);
+        console.log('result total', proofResult)
         console.log('result', proofResult.proof)
-        const proofBase64 = uint8ArrayToBase64(proofResult.proof);
+        const proofBase64 = encodeProofData(proofResult)
         setProof(proofBase64);
     }
     // Function to convert Uint8Array to Base64 string
     function uint8ArrayToBase64(buffer: Uint8Array): string {
         return btoa(String.fromCharCode.apply(null, Array.from(buffer)));
+    }
+
+    // Function to encode the entire ProofData object
+    function encodeProofData(proofData: ProofData): string {
+        // Convert all Uint8Arrays to Base64 strings
+        const publicInputsBase64 = proofData.publicInputs.map(uint8ArrayToBase64);
+        const proofBase64 = uint8ArrayToBase64(proofData.proof);
+
+        // Create a new object with the Base64-encoded data
+        const encodedProofData = {
+            publicInputs: publicInputsBase64,
+            proof: proofBase64,
+        };
+
+        // Serialize the object to a JSON string
+        return JSON.stringify(encodedProofData);
     }
 
     // Function to copy the proof to clipboard
